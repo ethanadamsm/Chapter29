@@ -8,45 +8,42 @@ import java.util.Scanner;
 public class Exercise5 {
 
 	public static void main(String[] args) {	
-		String[] lines = readFile("Exercise5.java");
+		String[] lines = readFile("source.java");
+		boolean cont = false;
 		for(int i = 0; i < lines.length; i++){
-			System.out.println(lines[i]);
-		}
-		System.out.println("");
-		Scanner input = new Scanner(System.in);
-		String inputs = input.nextLine();
-		
-		
-		if(inputs.length() >= 3 ){
-			if(inputs.substring(0, 3).equals("// ")){
-				System.out.println(inputs);
+			String current = lines[i].trim();
+			if(current.length() >= 2){
+				if(cont == true){
+					System.out.println(lines[i]);
+				}
+				if(current.substring(0, 2).equals("//")){
+					System.out.println(lines[i]);
+				}else if(current.substring(0, 2).equals("/*")){
+					System.out.println(lines[i]);
+					cont = true;
+				}else if(current.substring(0, 2).equals("*/")){
+					cont = false;
+				}
 			}
 		}
 	}
 	
 	public static String[] readFile(String files){
-		String line = "";
-		int count = 0;
-		int number = 0;
-		String[] lines = null;
-		int sum = 0;
+		String input = "";
 		try{
-			File file = new File(files);
-			Scanner scanner = new Scanner(file);
-			while(scanner.hasNextLine()){
-				count += 1;
+			BufferedReader file = new BufferedReader(new FileReader(files));
+			String line;
+			while((line = file.readLine()) != null){
+				input += line + '\n';
 			}
-			lines = new String[count];
-			scanner = new Scanner(file);
-			for(int i = 0; i < count; i++){
-				lines[i] = scanner.nextLine();
-			}
+			
 		}catch(FileNotFoundException ex) {
             System.out.println("Couldnt find file");  
         }catch(IOException ex) {
              ex.printStackTrace();
         }
-		return lines;
+		String[] output = input.split("\\r?\\n");
+		return output;
 	}
 
 }
